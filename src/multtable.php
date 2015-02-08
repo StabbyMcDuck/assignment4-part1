@@ -2,6 +2,8 @@
 /**
  * Regina Imhoff
  * CS290 Assignment 4
+ * Date: 2/7/15
+ * Time: 10:00 AM
  */
 
 error_reporting(E_ALL);
