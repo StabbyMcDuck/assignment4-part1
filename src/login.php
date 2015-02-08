@@ -10,7 +10,7 @@
 ?>
 
 <html>
-    <form action = "http://web.engr.oregonstate.edu/~imhoffr/assignment4-part1/src/login.php" method = "POST">
+    <form action = "http://web.engr.oregonstate.edu/~imhoffr/assignment4-part1/src/content1.php" method = "POST">
         <label>
             Username
                 <input type = "text" name = "username"><br>
