@@ -7,42 +7,69 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+$filtered_by_parameter = [];
+$all_integers = true;
 
-$minMultiplicand = (int) $_GET['min-multiplicand'];
-$maxMultiplicand = (int) $_GET['max-multiplicand'];
-$minMultiplier = (int) $_GET['min-multiplier'];
-$maxMultiplier = (int) $_GET['max-multiplier'];
+$parameters = ['min-multiplicand', 'max-multiplicand', 'min-multiplier', 'max-multiplier'];
 
-function isMinLessThanMax($min, $max){
-    /*if($max == null){
-        echo "No maximum parameter given :(<br>";
-    }*/
+foreach ($parameters as $parameter) {
+    $filtered = filter_input(INPUT_GET, $parameter, FILTER_VALIDATE_INT);
 
-    /*if($max != (integer($max))){
-        echo "Maximum parameter is not an integer :(<br>";
-    }*/
+    if ($filtered === NULL) {
+        $all_integers = false;
+        echo $parameter . " GET parameter is missing.<br/>";
+    } elseif ($filtered === false) {
+        $all_integers = false;
+        echo $parameter . " GET parameter is not an integer.<br/>";
+    } else {
+        $filtered_by_parameter[$parameter] = $filtered;
+    }
+}
 
+if ($all_integers) {
+    $all_ordered = true;
+    $suffixes = ['multiplicand', 'multiplier'];
 
-    /*if($min == null){
-        echo "No minimum parameter given :(<br>";
-    }*/
+    foreach ($suffixes as $suffix) {
+        $min_parameter = 'min-' . $suffix;
+        $max_parameter = 'max-'. $suffix;
 
-    if(!is_numeric($min)){
-        echo "Minimum parameter is not an integer :(<br>";
+        if ($filtered_by_parameter[$min_parameter] > $filtered_by_parameter[$max_parameter]) {
+            echo $min_parameter . " is greater than " . $max_parameter;
+            $all_ordered = false;
+        }
     }
 
-    if($min > $max){
-        echo '$min is ' . $min . "<br>";
-        echo '$max is ' . $max . "<br>";
-        echo '$min ' . $min . ' is greater than $max ' . $max . "<br>";
+    if ($all_ordered) {
+        echo '<table>';
+
+        $multiplicandStart = $filtered_by_parameter['min-multiplicand'] - 1; //0th row
+        $multiplierStart = $filtered_by_parameter['min-multiplier'] - 1; //0th column
+
+
+        for($i = $multiplicandStart; $i <= $filtered_by_parameter['max-multiplicand']; $i++){
+            echo '<tr>';
+
+            for($j = $multiplierStart; $j <= $filtered_by_parameter['max-multiplier']; $j++){
+                if(($i == $multiplicandStart) and ($j == $multiplierStart)) {
+                    echo '<th></th>';
+                }else if($i == $multiplicandStart){
+                    /* print top row */
+                    echo "<th>".$j."</th>";
+                }else if($j == $multiplierStart){
+                    /* print first column */
+                    echo "<th>".$i."</th>";
+                }else{
+                    echo "<td>".$i * $j."</td>";
+                }
+            }
+            echo '</tr>';
+        }
+
+        echo '</table>';
+
     }
 
 }
-
-isMinLessThanMax($minMultiplicand, $maxMultiplicand);
-isMinLessThanMax($minMultiplier, $maxMultiplier);
-
-
-
 
 ?>
