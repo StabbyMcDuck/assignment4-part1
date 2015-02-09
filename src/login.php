@@ -5,12 +5,13 @@
  * Time: 2:09 PM
  */
 
-
+session_start();
+session_destroy();
 
 ?>
 
 <html>
-    <form action = "http://web.engr.oregonstate.edu/~imhoffr/assignment4-part1/src/content1.php" method = "POST">
+    <form action = "content1.php" method = "POST">
         <label>
             Username
                 <input type = "text" name = "username"><br>
